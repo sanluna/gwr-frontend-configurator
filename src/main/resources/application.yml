@@ -1,0 +1,3 @@
+gwr:
+  multitenancy: false
+  current-tenant: ${ENV_TENANT}

@@ -1,0 +1,14 @@
+server:
+  port: 10000
+  use-forward-headers: true
+spring:
+  application:
+    name: gwr-frontend-configurator
+  cloud:
+    config:
+      uri: http://localhost:18001/configservice
+
+---
+spring:
+  profiles: cloud
+  cloud.config.uri: http://gwr-configuration-service/configservice
