@@ -7,6 +7,11 @@ public class Info {
     private String tenantUrl;
     private String authUrl;
     private String productUrl;
+    private String productCampaignUrl;
+    private String productGroupUrl;
+    private String productReviewUrl;
+
+    private FunctionsAllowed functionsAllowed;
 
     public String getTenant() {
         return tenant;
@@ -50,6 +55,42 @@ public class Info {
 
     public Info setProductUrl(String productUrl) {
         this.productUrl = productUrl;
+        return this;
+    }
+
+    public String getProductCampaignUrl() {
+        return productCampaignUrl;
+    }
+
+    public Info setProductCampaignUrl(String productCampaignUrl) {
+        this.productCampaignUrl = productCampaignUrl;
+        return this;
+    }
+
+    public String getProductGroupUrl() {
+        return productGroupUrl;
+    }
+
+    public Info setProductGroupUrl(String productGroupUrl) {
+        this.productGroupUrl = productGroupUrl;
+        return this;
+    }
+
+    public String getProductReviewUrl() {
+        return productReviewUrl;
+    }
+
+    public Info setProductReviewUrl(String productReviewUrl) {
+        this.productReviewUrl = productReviewUrl;
+        return this;
+    }
+
+    public FunctionsAllowed getFunctionsAllowed() {
+        return functionsAllowed;
+    }
+
+    public Info setFunctionsAllowed(FunctionsAllowed functionsAllowed) {
+        this.functionsAllowed = functionsAllowed;
         return this;
     }
 }
