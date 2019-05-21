@@ -65,3 +65,71 @@ spec:
   minReplicas: 1
   maxReplicas: 1
   targetCPUUtilizationPercentage: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gwr-frontend-configurator
+  labels:
+    app: gwr-frontend-configurator
+  namespace: demo2
+  annotations:
+    moniker.spinnaker.io/stack: member
+    moniker.spinnaker.io/detail: service
+spec:
+  selector:
+    matchLabels:
+      app: gwr-frontend-configurator
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gwr-frontend-configurator
+    spec:
+      containers:
+      - name: master
+        image: eu.gcr.io/sanluna-gwr/gwr-frontend-configurator
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 10000
+        readinessProbe:
+          httpGet:
+            path: /status/health
+            port: 10000
+            httpHeaders:
+            - name: Content-Type
+              value: application/json
+            - name: Accept
+              value: application/json
+          periodSeconds: 8
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 6
+          initialDelaySeconds: 20
+        env:
+        - name: JAVA_OPTS
+          value: -Xms128m -Xmx128m -Dspring.profiles.active=cloud
+        - name: ENV_TENANT
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        resources:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 150m
+            memory: 256Mi
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: gwr-frontend-configurator
+  namespace: demo2
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: gwr-frontend-configurator
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 80
